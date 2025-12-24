@@ -1,0 +1,21 @@
+{
+  "name": "rPPG Monitor",
+  "short_name": "rPPG",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#c0c0c0",
+  "theme_color": "#c0c0c0",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "./resource/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./resource/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
