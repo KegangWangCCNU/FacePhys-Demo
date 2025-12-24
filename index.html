@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#c0c0c0">
+    <link rel="apple-touch-icon" href="./resource/icon-192.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FacePhys Demo</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+    <style>
+        :root {
+            --bg-teal: #008080;
+            --win-gray: #c0c0c0;
+            --win-text: #000;
+            --win-blue: #000080;
+            --border-light: #fff;
+            --border-shadow: #808080;
+            --border-dark: #000;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--bg-teal);
+            color: var(--win-text);
+            font-family: "Courier New", Courier, monospace; 
+            min-height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center; 
+            padding: 50px 10px 110px 10px;
+            box-sizing: border-box;
+            overflow-x: hidden;
+            overflow-y: auto; 
+            user-select: none; 
+            -webkit-user-select: none;
+        }
+
+        #retro-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 42px;
+            background: var(--win-gray);
+            border-bottom: 2px solid var(--border-dark);
+            box-shadow: inset 0 -1px 0 var(--border-shadow), 0 1px 0 var(--border-light);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6px;
+            box-sizing: border-box;
+            font-family: "Courier New", Courier, monospace; 
+        }
+
+        .nav-group-left {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            height: 100%;
+        }
+
+        .nav-btn {
+            font-family: "MS Sans Serif", "Microsoft Sans Serif", Tahoma, sans-serif;
+            text-decoration: none;
+            color: black;
+            background: var(--win-gray);
+            height: 26px; 
+            padding: 0 8px; 
+            font-size: 12px;
+            border-top: 2px solid var(--border-light);
+            border-left: 2px solid var(--border-light);
+            border-right: 2px solid var(--border-dark);
+            border-bottom: 2px solid var(--border-dark);
+            box-shadow: 1px 1px 0 var(--border-shadow) inset;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        .nav-btn:hover {
+            background: #d4d4d4;
+        }
+
+        .nav-btn:active, .nav-btn.pressed {
+            border-top: 2px solid var(--border-dark);
+            border-left: 2px solid var(--border-dark);
+            border-right: 2px solid var(--border-light);
+            border-bottom: 2px solid var(--border-light);
+            background: #dfdfdf;
+            box-shadow: none;
+            padding-top: 2px; 
+            padding-left: 9px;
+            padding-right: 7px;
+            padding-bottom: 0;
+        }
+
+        .nav-btn i {
+            margin-right: 6px;
+            font-size: 13px;
+        }
+        
+        .nav-btn .fa-github { color: #000; }
+        .nav-btn .fa-python { color: #306998; }
+        .nav-btn .fa-file-lines { color: #555; }
+        .nav-btn .fa-circle-question { color: var(--win-blue); }
+
+        .litert-brand {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: black;
+            cursor: pointer;
+            padding: 2px 6px;
+            border: 1px dotted transparent; 
+            height: 26px;
+        }
+        .litert-brand:hover {
+            border: 1px dotted #808080;
+        }
+        .litert-text {
+            font-family: "MS Sans Serif", "Segoe UI", sans-serif;
+            font-style: italic;
+            font-size: 11px;
+            margin-right: 6px;
+        }
+        .litert-logo {
+            height: 20px;
+            width: auto;
+            display: block;
+        }
+
+        #about-menu {
+            display: none;
+            position: absolute;
+            top: 36px;
+            left: 0;
+            width: auto;
+            background: var(--win-gray);
+            border-top: 2px solid var(--border-light);
+            border-left: 2px solid var(--border-light);
+            border-right: 2px solid var(--border-dark);
+            border-bottom: 2px solid var(--border-dark);
+            box-shadow: 1px 1px 0 var(--border-shadow) inset, -1px -1px 0 var(--border-shadow) inset;
+            z-index: 10000;
+        }
+        
+        #about-menu.show {
+            display: block;
+        }
+
+        .menu-content {
+            padding: 10px;
+            font-size: 12px;
+            line-height: 1.5;
+            color: black;
+        }
+        
+        .menu-title {
+            font-weight: bold;
+            margin-bottom: 6px;
+            color: var(--win-blue);
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            .nav-btn span { display: none; }
+            .nav-btn i { margin-right: 0; }
+            .litert-text { display: none; }
+        }
+
+        #monitor-window {
+            width: 845px; 
+            display: flex;
+            flex-direction: column;
+            padding: 3px;
+            margin: 0 auto;
+        }
+        .win-outset {
+            background: var(--win-gray);
+            border-top: 2px solid var(--border-light);
+            border-left: 2px solid var(--border-light);
+            border-right: 2px solid var(--border-dark);
+            border-bottom: 2px solid var(--border-dark);
+            box-shadow: 1px 1px 0 var(--border-shadow) inset, -1px -1px 0 var(--border-shadow) inset;
+        }
+        .win-inset {
+            background: #000;
+            border-top: 2px solid var(--border-shadow);
+            border-left: 2px solid var(--border-shadow);
+            border-right: 2px solid var(--border-light);
+            border-bottom: 2px solid var(--border-light);
+            box-shadow: 1px 1px 0 var(--border-dark) inset, -1px -1px 0 var(--border-light) inset;
+        }
+        .title-bar {
+            font-family: "MS Sans Serif", "Microsoft Sans Serif", Tahoma, sans-serif;
+            background: linear-gradient(90deg, var(--win-blue), #1084d0);
+            color: white;
+            padding: 3px 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+            flex-shrink: 0;
+        }
+        #main-content {
+            display: flex;
+            gap: 6px;
+            align-items: stretch;
+            padding: 2px;
+            flex-wrap: nowrap; 
+        }
+        #vis-col { width: 340px; flex-shrink: 0; display: flex; flex-direction: column; gap: 6px; }
+        #monitor-col { flex: 1; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+        
+        @media (max-width: 800px) {
+            body { align-items: flex-start; padding-top: 60px; }
+            #monitor-window { max-width: 100%; }
+            #main-content { flex-direction: column; }
+            #vis-col { width: 100%; display: none; }
+        }
+
+        #psd-frame { height: 140px; position: relative; flex-shrink: 0; }
+        #nn-frame { flex: 1; display: flex; flex-direction: column; gap: 4px; min-height: 200px; }
+        .layer-tabs { display: flex; gap: 2px; padding-left: 2px; flex-shrink: 0; }
+        .layer-btn {
+            flex: 1; background: var(--win-gray);
+            border-top: 2px solid var(--border-light); border-left: 2px solid var(--border-light);
+            border-right: 2px solid var(--border-dark); border-bottom: 2px solid var(--border-dark);
+            box-shadow: 1px 1px 0 var(--border-shadow) inset;
+            padding: 3px 0; text-align: center; font-size: 11px; cursor: pointer; color: black;
+        }
+        .layer-btn:active, .layer-btn.active {
+            border-top: 2px solid var(--border-dark); border-left: 2px solid var(--border-dark);
+            border-right: 2px solid var(--border-light); border-bottom: 2px solid var(--border-light);
+            background: #dfdfdf; font-weight: bold; padding-top: 4px; padding-bottom: 2px;
+        }
+        #nn-grid { flex: 1; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 4px; background: var(--win-gray); padding: 2px; }
+        .grid-cell { position: relative; background: black; overflow: hidden; border: 1px solid var(--border-shadow); border-right: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); }
+        .full-width { grid-column: 1 / -1; }
+        .cell-label { position: absolute; top: 2px; left: 2px; background: var(--win-blue); color: white; font-size: 10px; padding: 1px 4px; z-index: 10; }
+        #stats-group { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; padding: 4px; background: var(--win-gray); flex-shrink: 0; }
+        .stat-item { display: flex; flex-direction: column; justify-content: flex-end; border: none; padding: 0; }
+        .stat-label { font-size: 13px; color: #000; margin-bottom: 3px; padding-left: 1px; text-align: right; display: block; }
+        .stat-value-box { background: var(--win-gray); border-top: 1px solid #808080; border-left: 1px solid #808080; border-bottom: 1px solid #fff; border-right: 1px solid #fff; padding: 2px 4px; height: 22px; display: flex; align-items: center; justify-content: flex-end; }
+        .stat-val { font-family: "Courier New", Courier, monospace; font-size: 16px; font-weight: bold; color: black; line-height: 1; text-shadow: 1px 1px 0 rgba(255,255,255,0.5); }
+        .stat-val.active { color: #0000FF; }
+        #video-frame { width: 100%; aspect-ratio: 4 / 3; position: relative; background: black; overflow: hidden; }
+        canvas.display-layer { position: absolute; top:0; left:0; width: 100%; height: 100%; object-fit: contain; }
+        #wave-frame { height: 90px; background: black; position: relative; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        
+        #bottom-bar { position: fixed; bottom: 0; left: 0; width: 100vw; height: 100px; z-index: 1000; display: flex; gap: 6px; padding: 4px; box-sizing: border-box; border-left: none; border-right: none; border-bottom: none; }
+        
+        #trend-wrapper { flex: 1; height: 100%; display: flex; gap: 0; background: var(--win-gray); position: relative;}
+        
+        .trend-y-axis {
+            width: 32px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-sizing: border-box;
+            border-right: 1px solid var(--border-shadow);
+        }
+        
+        .axis-label {
+            position: absolute;
+            right: 4px;
+            font-size: 12px;
+            font-family: "Courier New", Courier, monospace;
+            font-weight: bold;                  
+            color: black;                       
+            transform: translateY(50%);
+            -webkit-font-smoothing: none;       
+        }
+
+        #trend-container { 
+            flex: 1; 
+            height: 100%; 
+            background: black; 
+            position: relative; 
+        }
+
+        #trend-title { position: absolute; top: 2px; left: 4px; color: #00ff00; font-size: 10px; font-family: "Courier New", Courier, monospace; opacity: 0.7; pointer-events: none; }
+        
+        #save-container { width: 70px; display: flex; flex-direction: column; }
+        
+        #largeStartBtn { position: absolute; z-index: 50; padding: 6px 24px; height: 40px; background: var(--win-gray); color: black; font-weight: bold; font-size: 14px; border-top: 2px solid var(--border-light); border-left: 2px solid var(--border-light); border-right: 2px solid var(--border-dark); border-bottom: 2px solid var(--border-dark); box-shadow: 1px 1px 0 var(--border-shadow) inset; cursor: pointer; outline: none; font-family: "Courier New", Courier, monospace; }
+        #largeStartBtn:active { border-top: 2px solid var(--border-dark); border-left: 2px solid var(--border-dark); border-right: 2px solid var(--border-light); border-bottom: 2px solid var(--border-light); box-shadow: none; padding-top: 8px; padding-bottom: 4px; }
+        #largeStartBtn:disabled { color: #888; text-shadow: 1px 1px 0 white; cursor: wait; }
+        
+        #saveBtn { width: 100%; height: 100%; font-weight: bold; font-size: 12px; background: var(--win-gray); color: black; border-top: 2px solid var(--border-light); border-left: 2px solid var(--border-light); border-right: 2px solid var(--border-dark); border-bottom: 2px solid var(--border-dark); box-shadow: 1px 1px 0 var(--border-shadow) inset; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.1; text-align: center; padding: 2px; box-sizing: border-box; font-family: "Courier New", Courier, monospace; }
+        #saveBtn:active { border-top: 2px solid var(--border-dark); border-left: 2px solid var(--border-dark); border-right: 2px solid var(--border-light); border-bottom: 2px solid var(--border-light); background: #dfdfdf; padding-top: 2px; padding-left: 2px; box-shadow: none; }
+        
+        canvas { width: 100%; height: 100%; display: block; }
+    </style>
+</head>
+<body>
+
+<nav id="retro-nav">
+    <div class="nav-group-left">
+        <div style="position: relative;">
+            <div id="btn-about" class="nav-btn">
+                <i class="fa-solid fa-circle-question"></i>
+                <span>About</span>
+            </div>
+            <div id="about-menu">
+                <div class="menu-content" style="width: 320px; max-width: 90vw;">
+                    <div class="menu-title" style="margin-bottom: 8px; font-weight: bold;">FacePhys Demo V1.0</div>
+                    
+                    <p style="line-height: 1.5; margin-bottom: 8px; font-size: 14px; color: #333;">
+                        FacePhys leverages State Space Models (SSMs) to model heart dynamics as continuous-time controlled ODEs. This ensures robust handling of irregular sampling and precise capture of physiological signals.
+                    </p>
+                    
+                    <p style="line-height: 1.5; margin-bottom: 8px; font-size: 14px; color: #333;">
+                        Optimized for the edge inference, the model is ultra-lightweight (4MB) with latency as low as 5ms.
+                    </p>
+
+                    <p style="line-height: 1.5; font-size: 14px; color: #333;">
+                        Powered by LiteRT, inference runs in your browser. 
+                        <strong>Privacy is guaranteed with zero data upload.</strong>
+                    </p>
+
+                    <div style="border-top: 1px solid #ddd; margin: 12px 0;"></div>
+                    
+                    <p style="margin-top: 4px; text-align: right; font-style: italic; font-size: 12px; color: #666;">
+                        Author: Kegang Wang
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <a href="https://github.com/KegangWangCCNU/FacePhys-Release" target="_blank" class="nav-btn">
+            <i class="fa-brands fa-github"></i>
+            <span>GitHub</span>
+        </a>
+        
+        <a href="https://github.com/user-attachments/files/24302692/FacePhys2025.pdf" target="_blank" class="nav-btn">
+            <i class="fa-solid fa-file-lines"></i>
+            <span>Paper</span>
+        </a>
+        
+        <a href="https://github.com/KegangWangCCNU/open-rppg" target="_blank" class="nav-btn">
+            <i class="fa-brands fa-python"></i>
+            <span>Python SDK</span>
+        </a>
+    </div>
+
+    <a href="https://ai.google.dev/edge" target="_blank" class="litert-brand">
+        <span class="litert-text">Powered by</span>
+        <img src="resource/litert_logo.png" alt="LiteRT" class="litert-logo">
+    </a>
+</nav>
+
+<video id="videoInput" playsinline muted style="display:none"></video>
+
+<div id="monitor-window" class="win-outset">
+    <div class="title-bar">
+        <span>rPPG.EXE</span>
+    </div>
+
+    <div id="main-content">
+        <div id="vis-col">
+            <div id="psd-frame" class="win-inset">
+                <canvas id="psdCanvas"></canvas>
+            </div>
+
+            <div id="nn-frame">
+                <div class="layer-tabs">
+                    <div class="layer-btn active" data-layer="0">SSM1</div>
+                    <div class="layer-btn" data-layer="1">SSM2</div>
+                    <div class="layer-btn" data-layer="2">SSM3</div>
+                    <div class="layer-btn" data-layer="3">SSM4</div>
+                    <div class="layer-btn" data-layer="4">PROJ</div>
+                </div>
+
+                <div id="nn-grid" class="win-inset">
+                    <div class="grid-cell">
+                        <span class="cell-label">ROI</span>
+                        <canvas id="cropDisplayCanvas"></canvas>
+                    </div>
+                    <div class="grid-cell">
+                        <span class="cell-label">ATTN</span>
+                        <canvas id="heatmapCanvas"></canvas>
+                    </div>
+                    <div class="grid-cell full-width">
+                        <span class="cell-label">Heart State</span>
+                        <canvas id="trajCanvas"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="monitor-col">
+            <div id="stats-group" class="win-inset">
+                <div class="stat-item">
+                    <span class="stat-label">HR (BPM)</span>
+                    <div class="stat-value-box">
+                        <span id="hrVal" class="stat-val">--</span>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">SQI</span>
+                    <div class="stat-value-box">
+                        <span id="sqiVal" class="stat-val">0.00</span>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Latency</span>
+                    <div class="stat-value-box">
+                        <span id="latencyVal" class="stat-val">0.0</span>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">FPS</span>
+                    <div class="stat-value-box">
+                        <span id="fpsVal" class="stat-val">0</span>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Frame</span>
+                    <div class="stat-value-box">
+                        <span id="frameVal" class="stat-val">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="video-frame" class="win-inset">
+                <canvas id="previewCanvas" class="display-layer"></canvas>
+                <canvas id="overlayCanvas" class="display-layer"></canvas>
+            </div>
+
+            <div id="wave-frame" class="win-inset">
+                <button id="largeStartBtn" disabled>Loading System...</button>
+                <canvas id="plotCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="bottom-bar" class="win-outset">
+    <div id="trend-wrapper">
+        <div class="trend-y-axis">
+            <span class="axis-label" style="bottom: 71.4%">140</span>
+            <span class="axis-label" style="bottom: 42.8%">100</span>
+            <span class="axis-label" style="bottom: 14.2%">60</span>
+        </div>
+        <div id="trend-container" class="win-inset">
+            <span id="trend-title">HR TREND</span>
+            <canvas id="trendCanvas"></canvas>
+        </div>
+    </div>
+    <div id="save-container">
+        <button id="saveBtn">
+            <span>SAVE</span>
+            <span style="font-size:10px; font-weight:normal;">(.ZIP)</span>
+        </button>
+    </div>
+</div>
+
+<script type="module" src="./main.js"></script>
+
+<script>
+    const aboutBtn = document.getElementById('btn-about');
+    const aboutMenu = document.getElementById('about-menu');
+
+    aboutBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = aboutMenu.classList.contains('show');
+        if (isOpen) {
+            aboutMenu.classList.remove('show');
+            aboutBtn.classList.remove('pressed');
+        } else {
+            aboutMenu.classList.add('show');
+            aboutBtn.classList.add('pressed');
+        }
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!aboutMenu.contains(e.target) && !aboutBtn.contains(e.target)) {
+            aboutMenu.classList.remove('show');
+            aboutBtn.classList.remove('pressed');
+        }
+    });
+</script>
+</body>
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js')
+                .then((registration) => {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                })
+                .catch((err) => {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+        });
+    }
+</script>
+</html>
