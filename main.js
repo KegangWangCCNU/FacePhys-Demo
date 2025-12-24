@@ -584,6 +584,7 @@ async function startSystem() {
     if (stream) {
         currentFacingMode = (currentFacingMode === 'user' && hasBackCamera) ? 'environment' : 'user';
         stream.getTracks().forEach(track => track.stop());
+        stream = null;
         await new Promise(resolve => setTimeout(resolve, 2000));
     }
     try {
@@ -811,4 +812,5 @@ document.addEventListener("visibilitychange", () => {
             largeStartBtn.disabled = false;
         }
     }
+
 });
