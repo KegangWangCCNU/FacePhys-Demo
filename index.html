@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="icon" href="./resource/icon-192.png" type="image/png">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#c0c0c0">
     <link rel="apple-touch-icon" href="./resource/icon-192.png">
@@ -255,8 +254,25 @@
         .stat-value-box { background: var(--win-gray); border-top: 1px solid #808080; border-left: 1px solid #808080; border-bottom: 1px solid #fff; border-right: 1px solid #fff; padding: 2px 4px; height: 22px; display: flex; align-items: center; justify-content: flex-end; }
         .stat-val { font-family: "Courier New", Courier, monospace; font-size: 16px; font-weight: bold; color: black; line-height: 1; text-shadow: 1px 1px 0 rgba(255,255,255,0.5); }
         .stat-val.active { color: #0000FF; }
-        #video-frame { width: 100%; aspect-ratio: 4 / 3; position: relative; background: black; overflow: hidden; }
-        canvas.display-layer { position: absolute; top:0; left:0; width: 100%; height: 100%; object-fit: contain; }
+        #video-frame {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            position: relative;
+            background: black;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        canvas.display-layer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            object-fit: cover;
+        }
         #wave-frame { height: 90px; background: black; position: relative; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         
         #bottom-bar { position: fixed; bottom: 0; left: 0; width: 100vw; height: 100px; z-index: 1000; display: flex; gap: 6px; padding: 4px; box-sizing: border-box; border-left: none; border-right: none; border-bottom: none; }
@@ -507,5 +523,4 @@
         });
     }
 </script>
-
 </html>

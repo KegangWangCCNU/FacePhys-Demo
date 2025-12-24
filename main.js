@@ -4,6 +4,7 @@ let currentCaptureTime = 0;
 let dval = 1/30;
 let lastTrendUpdateTime = 0;
 let virtualTime = 0;
+let isCameraSwitching = false;
 const INPUT_BUFFER_SIZE = 450;
 const SQI_THRESHOLD = 0.45;
 const DB_NAME = "VitalMonitorDB";
@@ -15,7 +16,8 @@ const MODEL_FILES = {
     psd: './models/psd_model.tflite',
     state: './models/state.gz'
 };
-
+let currentFacingMode = 'user';
+let hasBackCamera = false;
 const videoElement = document.getElementById('videoInput');
 const previewCanvas = document.getElementById('previewCanvas');
 const previewCtx = previewCanvas.getContext('2d', { alpha: false });
@@ -282,6 +284,38 @@ class VisEngine {
 
 const visEngine = new VisEngine();
 
+function updateWorkerModes() {
+    const isNarrow = window.innerWidth <= 800;
+    inferenceWorker.postMessage({ type: 'setMode', payload: { isLowPower: isNarrow } });
+    psdWorker.postMessage({ type: 'setMode', payload: { isLowPower: isNarrow } });
+}
+updateWorkerModes();
+
+async function detectCameras() {
+    try {
+        const tempStream = await navigator.mediaDevices.getUserMedia({ video: true });
+        tempStream.getTracks().forEach(track => track.stop());
+
+        const devices = await navigator.mediaDevices.enumerateDevices();
+
+        hasBackCamera = devices.some(device => 
+            device.kind === 'videoinput' && 
+            /back|rear|environment/i.test(device.label)
+        );
+
+        if (!hasBackCamera) {
+            const videoDevices = devices.filter(d => d.kind === 'videoinput');
+            if (videoDevices.length > 1) {
+                hasBackCamera = true; 
+            }
+        }
+        console.log("Has back camera:", hasBackCamera);
+    } catch (e) {
+        console.error("Camera detection error:", e);
+        hasBackCamera = true; 
+    }
+}
+
 async function init() {
     largeStartBtn.innerText = "System Init...";
     
@@ -408,9 +442,20 @@ async function init() {
                  }
              });
         }
+        const videoContainer = document.getElementById('video-frame');
+            const isPortrait = window.innerHeight > window.innerWidth;
+            if (videoElement.srcObject) {
+                if (isPortrait) {
+                    videoContainer.style.aspectRatio = "1 / 1";
+                } else {
+                    videoContainer.style.aspectRatio = "4 / 3";
+                }
+            }
         updateCanvasSizes();
-        window.addEventListener('resize', updateCanvasSizes);
-
+        window.addEventListener('resize', () => {
+            updateCanvasSizes();
+            updateWorkerModes();
+        });
         largeStartBtn.disabled = false;
         largeStartBtn.innerText = "Start";
         largeStartBtn.addEventListener('click', startSystem);
@@ -534,20 +579,34 @@ async function handleSaveData() {
 }
 
 async function startSystem() {
-    if (isRunning) return;
-
+    if (isCameraSwitching) return;
+    isCameraSwitching = true;
+    if (stream) {
+        currentFacingMode = (currentFacingMode === 'user' && hasBackCamera) ? 'environment' : 'user';
+        stream.getTracks().forEach(track => track.stop());
+        await new Promise(resolve => setTimeout(resolve, 2000));
+    }
     try {
         largeStartBtn.style.display = 'none'; 
 
         stream = await navigator.mediaDevices.getUserMedia({
             video: {
-                facingMode: 'user',
+                facingMode: currentFacingMode,
                 width: { ideal: 640 },
                 height: { ideal: 480 },
                 frameRate: { ideal: 30 }
             },
             audio: false
         });
+        stream.facingMode = currentFacingMode;
+        if (!isRunning) {
+            const devices = await navigator.mediaDevices.enumerateDevices();
+            const videoDevices = devices.filter(d => d.kind === 'videoinput');
+            hasBackCamera = videoDevices.length > 1 || videoDevices.some(device => 
+                /back|rear|environment/i.test(device.label)
+            );
+            console.log("hasBackCamera", hasBackCamera);
+        }
 
         videoElement.srcObject = stream;
         await videoElement.play();
@@ -555,28 +614,37 @@ async function startSystem() {
         const vw = videoElement.videoWidth;
         const vh = videoElement.videoHeight;
         const videoContainer = document.getElementById('video-frame');
-        videoContainer.style.aspectRatio = `${vw} / ${vh}`;
+        const isPortrait = window.innerHeight > window.innerWidth;
+
+        if (isPortrait) {
+            videoContainer.style.aspectRatio = "1 / 1";
+        } else {
+            videoContainer.style.aspectRatio = `${vw} / ${vh}`;
+        }
         previewCanvas.width = vw;
         previewCanvas.height = vh;
         overlayCanvas.width = vw;
         overlayCanvas.height = vh;
-
-        isRunning = true;
-        bvpLog = [];
-        hrLog = [];
-        lastHrValue = 60; 
-        
-        lastFrameTime = performance.now();
-        lastFpsTime = lastFrameTime;
-        frameCount = 0;
-        if(currentCaptureTime>0){
-            currentCaptureTime = Date.now()-dval*1000;
+        if (!isRunning) {
+            isRunning = true;
+            bvpLog = [];
+            hrLog = [];
+            lastHrValue = 60; 
+            
+            lastFrameTime = performance.now();
+            lastFpsTime = lastFrameTime;
+            frameCount = 0;
+            tick();
+        }else{
+            if(currentCaptureTime>0){
+                currentCaptureTime = Date.now()-dval*1000;
+            }
         }
-        tick();
 
     } catch (err) {
-        alert("Camera failed: " + err.message);
         largeStartBtn.style.display = 'block'; 
+    } finally {
+        isCameraSwitching = false;
     }
 }
 
@@ -713,6 +781,14 @@ function tryUpdateTrend() {
             hr: lastHrValue, 
             valid: isValid 
         }
+    });
+    const videoContainer = document.getElementById('video-frame');
+    videoContainer.style.cursor = 'pointer';
+
+    videoContainer.addEventListener('click', () => {
+        if (!isRunning || !hasBackCamera) return;
+        currentFacingMode = (currentFacingMode === 'user') ? 'environment' : 'user';
+        startSystem();
     });
 }
 

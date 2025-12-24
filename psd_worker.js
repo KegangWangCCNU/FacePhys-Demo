@@ -2,6 +2,8 @@ let LiteRT = null;
 let Tensor = null;
 let sqiModel = null;
 let psdModel = null;
+let lastRunTime = 0;
+let lowPowerMode = false;
 
 const INPUT_SHAPE = [1, 450];
 const WASM_BASE_URL = 'https://cdn.jsdelivr.net/npm/@litertjs/core@0.2.1/wasm/';
@@ -11,6 +13,7 @@ self.onmessage = async (e) => {
     try {
         if (type === 'init') await handleInit(payload);
         else if (type === 'run') await handleRun(payload);
+        else if (type === 'setMode') { lowPowerMode = payload.isLowPower; }
     } catch (err) {
         self.postMessage({ type: 'error', msg: err.toString() });
     }
@@ -41,6 +44,11 @@ async function handleInit({ sqiBuffer, psdBuffer }) {
 
 async function handleRun({ inputData }) {
     if (!sqiModel || !psdModel) return;
+    const now = performance.now();
+    if (lowPowerMode && (now - lastRunTime < 500)) {
+        return; 
+    }
+    lastRunTime = now;
     const start = performance.now();
 
     const data = inputData instanceof Float32Array ? inputData : new Float32Array(inputData);

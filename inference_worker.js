@@ -4,6 +4,7 @@ let model = null;
 let projModel = null;
 let currentInputTensors = [];
 let loopStep = 0;
+let lowPowerMode = false;
 
 const IMG_IDX = 1;
 const DT_IDX = 0;
@@ -39,6 +40,7 @@ self.onmessage = async (e) => {
         if (type === 'init') await handleInit(payload);
         else if (type === 'run') await handleRun(payload);
         else if (type === 'export_state') await handleExportState();
+        else if (type === 'setMode') { lowPowerMode = payload.isLowPower; }
     } catch (err) {
         self.postMessage({ type: 'error', msg: err.toString() });
     }
@@ -120,19 +122,20 @@ async function handleRun({ imgData, dtVal, timestamp }) {
         }
     }
 
-    const projInputTensors = [];
-    for (let i = 0; i < PROJ_INPUT_SOURCE_INDICES.length; i++) {
-        projInputTensors[i] = currentInputTensors[PROJ_INPUT_SOURCE_INDICES[i]];
-    }
+    let formattedOutput = {};
+    if (!lowPowerMode) {
+        const projInputTensors = [];
+        for (let i = 0; i < PROJ_INPUT_SOURCE_INDICES.length; i++) {
+            projInputTensors[i] = currentInputTensors[PROJ_INPUT_SOURCE_INDICES[i]];
+        }
 
-    const projResults = projModel.run(projInputTensors);
-    const formattedOutput = {};
-
-    for (let i = 0; i < PROJ_OUTPUT_KEYS.length; i++) {
-        const tensor = projResults[i];
-        if (tensor) {
-            formattedOutput[PROJ_OUTPUT_KEYS[i]] = tensor.toTypedArray();
-            tensor.delete();
+        const projResults = projModel.run(projInputTensors);
+        for (let i = 0; i < PROJ_OUTPUT_KEYS.length; i++) {
+            const tensor = projResults[i];
+            if (tensor) {
+                formattedOutput[PROJ_OUTPUT_KEYS[i]] = tensor.toTypedArray();
+                tensor.delete();
+            }
         }
     }
 
