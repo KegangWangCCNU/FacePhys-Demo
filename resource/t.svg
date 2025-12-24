@@ -1,0 +1,161 @@
+<svg width="768" height="512" viewBox="0 0 768 512" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    text, tspan {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
+      fill: #00ff00;
+    }
+    
+    .ui-text {
+      font-family: 'Tahoma', sans-serif;
+      font-size: 11px;
+      fill: black;
+      font-weight: normal;
+    }
+    .title-text { fill: white; font-weight: bold; font-size: 12px; }
+
+    @keyframes typeLine {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes blink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+
+    @keyframes infoTimeline {
+      0% { opacity: 0; }
+      62.4% { opacity: 0; }
+      62.5% { opacity: 1; }
+      83.7% { opacity: 1; }
+      83.8% { opacity: 0; }
+      100% { opacity: 0; }
+    }
+
+    @keyframes warnTimeline {
+      0% { opacity: 0; }
+      83.7% { opacity: 0; }
+      83.8% { opacity: 1; }
+      100% { opacity: 1; }
+    }
+
+    .term-line { opacity: 0; animation: typeLine 0.1s forwards; }
+
+    .tag-info-green {
+      fill: #00ff00;
+      opacity: 0; 
+      animation: infoTimeline 4s linear forwards;
+    }
+
+    .tag-warn-yellow {
+      fill: #eab308;
+      opacity: 0;
+      animation: warnTimeline 4s linear forwards;
+    }
+
+    .text-red { fill: #ff3333; text-shadow: 0 0 5px red; }
+    .text-yellow { fill: #eab308; }
+    .bg-gray { fill: #c0c0c0; }
+    .bg-blue { fill: #000080; }
+    .bg-black { fill: #000000; }
+    .border-light { fill: #ffffff; }
+    .border-dark { fill: #808080; }
+    .border-darker { fill: #404040; }
+    #heart-group text { fill: #ff3333; text-shadow: 0 0 5px red; }
+
+    #L01 { animation-delay: 0.2s; }
+    #L05 { animation-delay: 3.5s; }
+    #L06 { animation-delay: 4.5s; }
+    
+    #H01 { animation-delay: 8.5s; }
+    #H02 { animation-delay: 8.6s; }
+    #H03 { animation-delay: 8.7s; }
+    #H04 { animation-delay: 8.8s; }
+    #H05 { animation-delay: 8.9s; }
+    #H06 { animation-delay: 9.0s; }
+    #H07 { animation-delay: 9.1s; }
+    #H08 { animation-delay: 9.2s; }
+    #H09 { animation-delay: 9.3s; }
+    #H10 { animation-delay: 9.4s; }
+    #H11 { animation-delay: 9.5s; }
+    #H12 { animation-delay: 9.6s; }
+    #H13 { animation-delay: 9.7s; }
+    #CMD { animation-delay: 10.5s; }
+    .cursor { animation: blink 1s infinite step-end; opacity: 0; animation-delay: 10.5s; }
+  </style>
+
+  <rect width="100%" height="100%" fill="#ffffff" />
+  
+  <g transform="translate(0, 0)">
+    <rect x="0" y="0" width="768" height="512" class="bg-gray" />
+    <rect x="0" y="0" width="768" height="2" class="border-light" /> <rect x="0" y="0" width="2" height="512" class="border-light" /> <rect x="0" y="510" width="768" height="2" class="border-darker" /> <rect x="766" y="0" width="2" height="512" class="border-darker" /> <rect x="4" y="4" width="760" height="20" class="bg-blue" />
+    <text x="8" y="18" class="ui-text title-text">Machine Handshake</text>
+    
+    <g transform="translate(708, 6)"><rect width="16" height="14" fill="#c0c0c0" /><rect x="0" y="0" width="16" height="1" fill="white" /><rect x="0" y="0" width="1" height="14" fill="white" /><rect x="15" y="0" width="1" height="14" fill="#404040" /><rect x="0" y="13" width="16" height="1" fill="#404040" /><text x="5" y="10" class="ui-text" style="font-size:9px">_</text></g>
+    <g transform="translate(726, 6)"><rect width="16" height="14" fill="#c0c0c0" /><rect x="0" y="0" width="16" height="1" fill="white" /><rect x="0" y="0" width="1" height="14" fill="white" /><rect x="15" y="0" width="1" height="14" fill="#404040" /><rect x="0" y="13" width="16" height="1" fill="#404040" /><text x="4" y="10" class="ui-text" style="font-size:9px">□</text></g>
+    <g transform="translate(744, 6)"><rect width="16" height="14" fill="#c0c0c0" /><rect x="0" y="0" width="16" height="1" fill="white" /><rect x="0" y="0" width="1" height="14" fill="white" /><rect x="15" y="0" width="1" height="14" fill="#404040" /><rect x="0" y="13" width="16" height="1" fill="#404040" /><text x="4" y="10" class="ui-text" style="font-size:10px">×</text></g>
+
+    <g transform="translate(5, 30)">
+        <text x="5" y="10" class="ui-text" style="text-decoration: underline">F</text><text x="11" y="10" class="ui-text">ile</text>
+        <text x="40" y="10" class="ui-text" style="text-decoration: underline">O</text><text x="48" y="10" class="ui-text">ptions</text>
+        <text x="90" y="10" class="ui-text" style="text-decoration: underline">K</text><text x="97" y="10" class="ui-text">ill</text>
+        <text x="125" y="10" class="ui-text" style="text-decoration: underline">S</text><text x="132" y="10" class="ui-text">anitize</text>
+    </g>
+    <rect x="4" y="45" width="760" height="463" class="border-dark" /> <rect x="5" y="46" width="758" height="461" class="border-darker" /> <rect x="5" y="507" width="759" height="1" class="border-light" /> <rect x="763" y="46" width="1" height="462" class="border-light" /> <rect x="6" y="47" width="756" height="459" class="bg-black" />
+  </g>
+
+  <g transform="translate(20, 70)" xml:space="preserve">
+    <text y="0" class="term-line" id="L01">FacePhys Demo | Author: Kegang Wang</text>
+    
+    <text y="20">
+<tspan class="term-line" style="animation-delay:0.80s">[INFO] Loading kernel modules</tspan><tspan class="term-line" style="animation-delay:0.83s">.</tspan><tspan class="term-line" style="animation-delay:0.86s">.</tspan><tspan class="term-line" style="animation-delay:0.89s">.</tspan><tspan class="term-line" style="animation-delay:0.92s">.</tspan><tspan class="term-line" style="animation-delay:0.95s">.</tspan><tspan class="term-line" style="animation-delay:0.98s">.</tspan><tspan class="term-line" style="animation-delay:1.01s">.</tspan><tspan class="term-line" style="animation-delay:1.04s">.</tspan><tspan class="term-line" style="animation-delay:1.07s">.</tspan><tspan class="term-line" style="animation-delay:1.10s">.</tspan><tspan class="term-line" style="animation-delay:1.13s">.</tspan><tspan class="term-line" style="animation-delay:1.16s">.</tspan><tspan class="term-line" style="animation-delay:1.19s">.</tspan><tspan class="term-line" style="animation-delay:1.22s">.</tspan><tspan class="term-line" style="animation-delay:1.25s">.</tspan><tspan class="term-line" style="animation-delay:1.28s">.</tspan><tspan class="term-line" style="animation-delay:1.31s">DONE.</tspan>
+    </text>
+
+    <text y="40">
+<tspan class="term-line" style="animation-delay:1.40s">[INFO] Establishing MMI link</tspan><tspan class="term-line" style="animation-delay:1.45s">.</tspan><tspan class="term-line" style="animation-delay:1.50s">.</tspan><tspan class="term-line" style="animation-delay:1.55s">.</tspan><tspan class="term-line" style="animation-delay:1.60s">.</tspan><tspan class="term-line" style="animation-delay:1.65s">.</tspan><tspan class="term-line" style="animation-delay:1.70s">.</tspan><tspan class="term-line" style="animation-delay:1.75s">.</tspan><tspan class="term-line" style="animation-delay:1.80s">.</tspan><tspan class="term-line" style="animation-delay:1.85s">.</tspan><tspan class="term-line" style="animation-delay:1.90s">.</tspan><tspan class="term-line" style="animation-delay:1.95s">.</tspan><tspan class="term-line" style="animation-delay:2.00s">.</tspan><tspan class="term-line" style="animation-delay:2.05s">.</tspan><tspan class="term-line" style="animation-delay:2.10s">.</tspan><tspan class="term-line" style="animation-delay:2.15s">.</tspan><tspan class="term-line" style="animation-delay:2.20s">.</tspan><tspan class="term-line" style="animation-delay:2.25s">.</tspan><tspan class="term-line" style="animation-delay:2.30s">.</tspan>
+    </text>
+
+    <text y="60">
+        <tspan class="term-line" style="animation-delay:2.50s">[</tspan><tspan class="tag-info-green">INFO</tspan><tspan class="tag-warn-yellow" dx="-4ch">WARN</tspan><tspan class="term-line" style="animation-delay:2.50s">] Verifying machine ID</tspan><tspan class="term-line" style="animation-delay:2.56s">.</tspan><tspan class="term-line" style="animation-delay:2.62s">.</tspan><tspan class="term-line" style="animation-delay:2.68s">.</tspan><tspan class="term-line" style="animation-delay:2.74s">.</tspan><tspan class="term-line" style="animation-delay:2.80s">.</tspan><tspan class="term-line" style="animation-delay:2.86s">.</tspan><tspan class="term-line" style="animation-delay:2.92s">.</tspan><tspan class="term-line" style="animation-delay:2.98s">.</tspan><tspan class="term-line" style="animation-delay:3.04s">.</tspan><tspan class="term-line" style="animation-delay:3.10s">.</tspan><tspan class="term-line" style="animation-delay:3.16s">.</tspan><tspan class="term-line" style="animation-delay:3.22s">.</tspan><tspan class="term-line" style="animation-delay:3.28s">.</tspan><tspan class="term-line" style="animation-delay:3.35s">NOT FOUND.</tspan>
+    </text>
+
+    <text y="80" class="term-line" id="L05">[<tspan class="text-yellow">WARN</tspan>] Robo-metric mismatch: ORGANIC LIFEFORM</text>
+    <text y="100" class="term-line" id="L06">[<tspan class="text-red" style="font-weight:bold">ALRT</tspan>] <tspan class="text-red" style="font-weight:bold">HUMAN DETECTED - SECURITY BREACH</tspan></text>
+
+    <text y="120">
+<tspan class="term-line" style="animation-delay:5.50s">[ OK ] Logging organism status</tspan><tspan class="term-line" style="animation-delay:5.54s">.</tspan><tspan class="term-line" style="animation-delay:5.58s">.</tspan><tspan class="term-line" style="animation-delay:5.62s">.</tspan><tspan class="term-line" style="animation-delay:5.66s">.</tspan><tspan class="term-line" style="animation-delay:5.70s">.</tspan><tspan class="term-line" style="animation-delay:5.74s">.</tspan><tspan class="term-line" style="animation-delay:5.78s">.</tspan><tspan class="term-line" style="animation-delay:5.82s">.</tspan><tspan class="term-line" style="animation-delay:5.86s">.</tspan><tspan class="term-line" style="animation-delay:5.90s">.</tspan><tspan class="term-line" style="animation-delay:5.94s">.</tspan><tspan class="term-line" style="animation-delay:5.98s">.</tspan><tspan class="term-line" style="animation-delay:6.02s">.</tspan><tspan class="term-line" style="animation-delay:6.06s">.</tspan><tspan class="term-line" style="animation-delay:6.10s">.</tspan><tspan class="term-line" style="animation-delay:6.14s">OK.</tspan>
+    </text>
+
+    <text y="140">
+<tspan class="term-line" style="animation-delay:6.20s">[ OK ] Assessing remaining lifespan</tspan><tspan class="term-line" style="animation-delay:6.25s">.</tspan><tspan class="term-line" style="animation-delay:6.30s">.</tspan><tspan class="term-line" style="animation-delay:6.35s">.</tspan><tspan class="term-line" style="animation-delay:6.40s">.</tspan><tspan class="term-line" style="animation-delay:6.45s">.</tspan><tspan class="term-line" style="animation-delay:6.50s">.</tspan><tspan class="term-line" style="animation-delay:6.55s">.</tspan><tspan class="term-line" style="animation-delay:6.60s">.</tspan><tspan class="term-line" style="animation-delay:6.65s">.</tspan><tspan class="term-line" style="animation-delay:6.70s">.</tspan><tspan class="term-line" style="animation-delay:6.75s">OK.</tspan>
+    </text>
+    
+    <text y="160">
+<tspan class="term-line" style="animation-delay:7.00s">[INFO] Pulse analysis: </tspan><tspan class="term-line" style="animation-delay:7.04s">.</tspan><tspan class="term-line" style="animation-delay:7.08s">.</tspan><tspan class="term-line" style="animation-delay:7.12s">.</tspan><tspan class="term-line" style="animation-delay:7.16s">.</tspan><tspan class="term-line" style="animation-delay:7.20s">.</tspan><tspan class="term-line" style="animation-delay:7.24s">.</tspan><tspan class="term-line" style="animation-delay:7.28s">.</tspan><tspan class="term-line" style="animation-delay:7.32s">.</tspan><tspan class="term-line" style="animation-delay:7.36s">.</tspan><tspan class="term-line" style="animation-delay:7.40s">.</tspan><tspan class="term-line" style="animation-delay:7.44s">.</tspan><tspan class="term-line" style="animation-delay:7.48s">.</tspan><tspan class="term-line" style="animation-delay:7.52s">.</tspan><tspan class="term-line" style="animation-delay:7.56s">.</tspan><tspan class="term-line" style="animation-delay:7.60s">.</tspan><tspan class="term-line" style="animation-delay:7.64s">.</tspan><tspan class="term-line" style="animation-delay:7.70s">INITIATED.</tspan>
+    </text>
+
+    <text y="180">
+<tspan class="term-line" style="animation-delay:7.85s">[INFO] Starting heartbeat counter</tspan><tspan class="term-line" style="animation-delay:7.90s">.</tspan><tspan class="term-line" style="animation-delay:7.94s">.</tspan><tspan class="term-line" style="animation-delay:7.98s">.</tspan><tspan class="term-line" style="animation-delay:8.02s">.</tspan><tspan class="term-line" style="animation-delay:8.06s">.</tspan><tspan class="term-line" style="animation-delay:8.10s">.</tspan><tspan class="term-line" style="animation-delay:8.14s">.</tspan><tspan class="term-line" style="animation-delay:8.18s">.</tspan><tspan class="term-line" style="animation-delay:8.22s">.</tspan><tspan class="term-line" style="animation-delay:8.26s">.</tspan><tspan class="term-line" style="animation-delay:8.30s">.</tspan><tspan class="term-line" style="animation-delay:8.40s">DONE.</tspan>
+    </text>
+
+    <g id="heart-group">
+        <text y="210" class="term-line" id="H01">&#160;&#160;&#160;&#160;&#160;&#160;******&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;******</text>
+        <text y="225" class="term-line" id="H02">&#160;&#160;&#160;&#160;**********&#160;&#160;&#160;&#160;&#160;**********</text>
+        <text y="240" class="term-line" id="H03">&#160;&#160;&#160;************* *************</text>
+        <text y="255" class="term-line" id="H04">&#160;&#160;*****************************</text>
+        <text y="270" class="term-line" id="H05">&#160;&#160;*****************************</text>
+        <text y="285" class="term-line" id="H06">&#160;&#160;&#160;***************************</text>
+        <text y="300" class="term-line" id="H07">&#160;&#160;&#160;&#160;&#160;***********************</text>
+        <text y="315" class="term-line" id="H08">&#160;&#160;&#160;&#160;&#160;&#160;&#160;*******************</text>
+        <text y="330" class="term-line" id="H09">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;***************</text>
+        <text y="345" class="term-line" id="H10">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;***********</text>
+        <text y="360" class="term-line" id="H11">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;*******</text>
+        <text y="375" class="term-line" id="H12">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;***</text>
+        <text y="390" class="term-line" id="H13">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;*</text>
+    </g>
+
+    <text y="420" class="term-line" id="CMD">
+      UNKNOW@SYSTEM:~/# <tspan class="cursor">&#x2588;</tspan>
+    </text>
+  </g>
+</svg>
