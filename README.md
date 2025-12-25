@@ -1,5 +1,8 @@
 # FacePhys Demo
-<img src="./resource/t.svg" alt="FacePhys Logo"/>
+
+<a href="https://kegangwangccnu.github.io/FacePhys-Demo/">
+    <img src="./resource/t.svg" alt="FacePhys Logo"/>
+</a>
 
 **Live Demo:** https://kegangwangccnu.github.io/FacePhys-Demo/
 > *Note: A proxy might be required in restricted network regions.*
