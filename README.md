@@ -1,5 +1,7 @@
 # FacePhys Demo
-<img src="./resource/t.svg"/>
+<img src="./resource/t.svg" alt="FacePhys Logo"/>
+
+**Live Demo:** https://kegangwangccnu.github.io/FacePhys-Demo/
 
 ## Overview
 
@@ -25,15 +27,20 @@ The application runs inference locally using LiteRT and WebAssembly. It is desig
 This project is a Progressive Web App (PWA) and can be installed as a standalone application.
 
 ### Desktop (Chrome / Edge)
-1.  Open the website.
+1.  Open the [website](https://kegangwangccnu.github.io/FacePhys-Demo/).
 2.  Click the Install icon in the address bar.
 
-### Android
-1.  Open the website in Chrome.
+### Mobile (Android / iOS)
+Scan the QR code below to access the application on your mobile device:
+
+<img width="151" height="170" alt="QRcode" src="https://github.com/user-attachments/assets/668f86de-644e-4d17-a6b3-3b00a945894f" />
+
+#### Android
+1.  Open the scanned link in Chrome.
 2.  Open the menu and select **Add to Home screen** or **Install App**.
 
-### iOS
-1.  Open the website in Safari.
+#### iOS
+1.  Open the scanned link in Safari.
 2.  Tap the Share button and select **Add to Home Screen**.
 
 ## License & Privacy Protocol
