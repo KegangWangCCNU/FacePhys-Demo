@@ -807,6 +807,7 @@ document.addEventListener("visibilitychange", () => {
                 videoElement.pause();
                 videoElement.srcObject = null;
             }
+            currentCaptureTime = 0;
             largeStartBtn.style.display = 'block';
             largeStartBtn.innerText = "Resume"; 
             largeStartBtn.disabled = false;
