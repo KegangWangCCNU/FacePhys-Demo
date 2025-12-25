@@ -34,24 +34,23 @@ self.addEventListener('activate', (e) => {
 
 self.addEventListener('fetch', (e) => {
     if (!e.request.url.startsWith('http')) {
-        return; 
+        return;
     }
     e.respondWith(
-        caches.match(e.request).then((cachedResponse) => {
-            if (cachedResponse) {
-                return cachedResponse;
-            }
-            return fetch(e.request).then((response) => {
-                if (!response || response.status !== 200 || response.type !== 'basic' && response.type !== 'cors') {
-                    return response;
-                }
-                const responseToCache = response.clone();
-                caches.open(CACHE_NAME).then((cache) => {
-                    cache.put(e.request, responseToCache);
+        caches.open(CACHE_NAME).then((cache) => {
+            return cache.match(e.request).then((cachedResponse) => {
+                const fetchPromise = fetch(e.request).then((networkResponse) => {
+                    if (networkResponse && networkResponse.status === 200) {
+                        cache.put(e.request, networkResponse.clone());
+                    }
+                    return networkResponse;
+                }).catch(() => {
                 });
-                return response;
+                if (cachedResponse) {
+                    return cachedResponse;
+                }
+                return fetchPromise;
             });
         })
     );
-
 });
