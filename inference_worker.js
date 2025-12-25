@@ -100,9 +100,7 @@ async function handleRun({ imgData, dtVal, timestamp }) {
 
     currentInputTensors[IMG_IDX] = new Tensor(imgData, IMG_SHAPE);
     currentInputTensors[DT_IDX] = new Tensor(new Float32Array([dtVal]), [1]);
-
     const results = model.run(currentInputTensors);
-    
     const usedOutputIndices = new Set();
     for (const map of STATE_MAP) {
         const outputTensor = results[map.outIdx];

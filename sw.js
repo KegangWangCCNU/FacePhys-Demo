@@ -33,6 +33,7 @@ self.addEventListener('activate', (e) => {
 });
 
 self.addEventListener('fetch', (e) => {
+    return
     if (!e.request.url.startsWith('http')) {
         return; 
     }
@@ -53,5 +54,4 @@ self.addEventListener('fetch', (e) => {
             });
         })
     );
-
 });

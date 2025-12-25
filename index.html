@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- <script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
+    <script>
+    var vConsole = new VConsole();
+    </script> -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#c0c0c0">
     <link rel="apple-touch-icon" href="./resource/icon-192.png">
@@ -222,7 +226,7 @@
         #vis-col { width: 340px; flex-shrink: 0; display: flex; flex-direction: column; gap: 6px; }
         #monitor-col { flex: 1; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
         
-        @media (max-width: 800px) {
+        @media (max-width: 900px) {
             body { align-items: flex-start; padding-top: 60px; }
             #monitor-window { max-width: 100%; }
             #main-content { flex-direction: column; }
@@ -244,7 +248,7 @@
             border-right: 2px solid var(--border-light); border-bottom: 2px solid var(--border-light);
             background: #dfdfdf; font-weight: bold; padding-top: 4px; padding-bottom: 2px;
         }
-        #nn-grid { flex: 1; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 4px; background: var(--win-gray); padding: 2px; }
+        #nn-grid { flex: 1; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 0.95fr 1.05fr; gap: 4px; background: var(--win-gray); padding: 2px; }
         .grid-cell { position: relative; background: black; overflow: hidden; border: 1px solid var(--border-shadow); border-right: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); }
         .full-width { grid-column: 1 / -1; }
         .cell-label { position: absolute; top: 2px; left: 2px; background: var(--win-blue); color: white; font-size: 10px; padding: 1px 4px; z-index: 10; }

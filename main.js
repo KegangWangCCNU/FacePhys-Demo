@@ -6,7 +6,7 @@ let lastTrendUpdateTime = 0;
 let virtualTime = 0;
 let isCameraSwitching = false;
 const INPUT_BUFFER_SIZE = 450;
-const SQI_THRESHOLD = 0.45;
+const SQI_THRESHOLD = 0.38;
 const DB_NAME = "VitalMonitorDB";
 const STORE_NAME = "states";
 const MODEL_FILES = {
@@ -582,10 +582,11 @@ async function startSystem() {
     if (isCameraSwitching) return;
     isCameraSwitching = true;
     if (stream) {
-        currentFacingMode = (currentFacingMode === 'user' && hasBackCamera) ? 'environment' : 'user';
         stream.getTracks().forEach(track => track.stop());
         stream = null;
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        videoElement.srcObject = null;
+        await new Promise(resolve => setTimeout(resolve, 500));
+        currentFacingMode = (currentFacingMode === 'user') ? 'environment' : 'user';
     }
     try {
         largeStartBtn.style.display = 'none'; 
@@ -784,11 +785,10 @@ function tryUpdateTrend() {
         }
     });
     const videoContainer = document.getElementById('video-frame');
-    videoContainer.style.cursor = 'pointer';
+    videoContainer.style.cursor = 'default';
 
     videoContainer.addEventListener('click', () => {
         if (!isRunning || !hasBackCamera) return;
-        currentFacingMode = (currentFacingMode === 'user') ? 'environment' : 'user';
         startSystem();
     });
 }
@@ -812,5 +812,4 @@ document.addEventListener("visibilitychange", () => {
             largeStartBtn.disabled = false;
         }
     }
-
 });
