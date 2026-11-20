@@ -48,4 +48,21 @@ Scan the QR code below to access the application on your mobile device:
 
 ## License
 
-MIT License with Privacy Protection Addendum — see [LICENSE](LICENSE) for details.
+Copyright (c) 2025 FacePhys
+
+The FacePhys models and model architecture implementations are maintained
+by [FacePhys](https://facephys.com).
+
+The code, pretrained weights, and model artifacts are available for
+non-commercial academic research, including use, modification, and
+redistribution, under the [FacePhys Academic Research License](LICENSE).
+
+Commercial use requires a separate written license.
+For commercial licensing and the latest models, contact
+[FacePhys](https://facephys.com).
+
+## Paper and Citation
+
+Please cite the FacePhys paper when using these materials in research:
+
+[FacePhys — NeurIPS 2026 paper page](https://neurips.cc/virtual/2026/loc/paris/poster/150724)
