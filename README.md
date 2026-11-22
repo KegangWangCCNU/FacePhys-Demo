@@ -8,6 +8,8 @@
 > *Note: A proxy might be required in restricted network regions.*
 **Paper:** [FacePhys: State of the Heart Learning (NeurIPS 2026)](https://neurips.cc/virtual/2026/loc/paris/poster/150724)
 
+**Model archive:** [Frozen FacePhys release](https://github.com/KegangWangCCNU/FacePhys-Release-Archive/releases/tag/archive-2026-11-22)
+
 ## Overview
 
 FacePhys Demo is a browser-based remote photoplethysmography (rPPG) monitor. It uses State Space Models (SSMs) to extract heart rate and heart rate variability from facial video feeds via a standard webcam.
