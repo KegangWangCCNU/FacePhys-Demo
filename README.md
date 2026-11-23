@@ -53,3 +53,5 @@ Scan the QR code below to access the application on your mobile device:
 ## License
 
 MIT License with Privacy Protection Addendum — see [LICENSE](LICENSE) for details.
+
+The [repository license](LICENSE) applies only to the code. Model weights may be subject to separate licenses; check the license for each model before use.
